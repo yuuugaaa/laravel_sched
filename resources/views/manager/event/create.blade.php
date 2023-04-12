@@ -40,7 +40,7 @@
                             <div class="sm:flex">
                                 <div class="pb-4">
                                     <x-label for="max_people" value="定員" />
-                                    <x-input id="max_people" class="block mt-1 w-full" type="number" name="max_people" :value="old('max_people')" required />
+                                    <x-input id="max_people" class="block mt-1 w-full" type="number" min="0" name="max_people" :value="old('max_people')" required />
                                 </div>
                             </div>
                             <div class="pb-4">
