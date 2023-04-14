@@ -11,6 +11,11 @@
                 <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
                 <section class="text-gray-600 body-font">
                     <div class="container mx-auto">
+                        @if (session('status'))
+                            <div class="mb-4 font-medium text-sm text-center text-green-600">
+                                {{ session('status') }}
+                            </div>
+                        @endif
                         <div class="w-full mx-auto overflow-auto">
                             <table class="table-auto w-full text-left whitespace-no-wrap">
                             <thead>
