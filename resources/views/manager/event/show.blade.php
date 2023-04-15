@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            イベント登録
+            イベント詳細
         </h2>
     </x-slot>
 
@@ -17,42 +17,44 @@
                             </div>
                         @endif
                 
-                        <form method="POST" action="{{ route('event.store') }}">
-                            @csrf
+                        <form method="get" action="{{ route('event.edit', [ 'event' => $event->id ]) }}">
                             <div class="pb-4">
                                 <x-label for="event_name" value="イベント名" />
-                                <x-input id="event_name" class="block mt-1 w-full" type="text" name="event_name" :value="old('event_name')" required autofocus />
+                                <div class="block mt-1 w-full">{{ $event->name }}</div>
                             </div>
                             <div class="sm:flex justify-between">
                                 <div class="pb-4">
                                     <x-label for="event_date" value="日付" />
-                                    <x-input id="event_date" class="block mt-1 w-full" type="text" name="event_date" :value="old('event_date')" required />
+                                    <div class="block mt-1 w-full">{{ $event->eventDate }}</div>
                                 </div>
                                 <div class="pb-4">
                                     <x-label for="start_time" value="開始時間" />
-                                    <x-input id="start_time" class="block mt-1 w-full" type="text" name="start_time" :value="old('start_time')" required />
+                                    <div class="block mt-1 w-full">{{ $event->startTime }}</div>
                                 </div>
                                 <div class="pb-4">
                                     <x-label for="end_time" value="終了時間" />
-                                    <x-input id="end_time" class="block mt-1 w-full" type="text" name="end_time" :value="old('end_time')" required />
+                                    <div class="block mt-1 w-full">{{ $event->endTime }}</div>
                                 </div>
                             </div>
                             <div class="sm:flex">
                                 <div class="pb-4">
                                     <x-label for="max_people" value="定員" />
-                                    <x-input id="max_people" class="block mt-1 w-full" type="number" min="0" name="max_people" :value="old('max_people')" required />
+                                    <div class="block mt-1 w-full">{{ $event->max_people }}</div>
                                 </div>
                             </div>
                             <div class="pb-4">
                                 <x-label for="information" value="イベント詳細" />
-                                <x-textarea id="information" class="block mt-1 w-full" name="information" />
+                                <div class="block mt-1 w-full">{!! nl2br(e($event->information)) !!}</div>
                             </div>
                             <div class="pb-4">
-                                <label class="mr-4"><input type="radio" class="mr-1" name="is_visible" value="1" checked>表示</label>
-                                <label><input type="radio" class="mr-1" name="is_visible" value="0">非表示</label>
+                                @if ($event->is_visible)
+                                <label class="text-green-600">表示中</label>
+                                @else
+                                <label class="text-red-600">非表示中</label>
+                                @endif
                             </div>
                             <div class="flex pt-3 w-full mx-auto">
-                                <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">新規登録</button>
+                                <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">編集</button>
                             </div>
                         </form>
                     </div>

@@ -31,7 +31,9 @@
                             <tbody>
                                 @foreach ($events as $event)
                                 <tr>
-                                <td class="px-4 py-3text-lg text-gray-900">{{ $event->name }}</td>
+                                <td class="px-4 py-3text-lg text-indigo-600">
+                                    <a href="{{ route('event.show', [ "event" => $event->id ]) }}" class="hover:underline">{{ $event->name }}</a>
+                                </td>
                                 <td class="px-4 py-3">{{ $event->start_date }}</td>
                                 <td class="px-4 py-3">{{ $event->end_date }}</td>
                                 <td class="px-4 py-3">30</td>
