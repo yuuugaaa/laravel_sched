@@ -58,18 +58,12 @@ class EventController extends Controller
 
     public function show(Event $event)
     {
-//        $eventDate = $event->eventDate;
-//        $startTime = $event->startTime;
-//        $endTime = $event->endTime;
-//
-//        dd($eventDate, $startTime, $endTime);
-
         return view('manager.event.show', compact('event'));
     }
 
     public function edit(Event $event)
     {
-        //
+        return view('manager.event.edit', compact('event'));
     }
 
     public function update(UpdateEventRequest $request, Event $event)
