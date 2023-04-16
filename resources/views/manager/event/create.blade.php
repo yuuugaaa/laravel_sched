@@ -11,9 +11,9 @@
                 <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
                     <div class="max-w-2xl mx-auto">
                         <x-validation-errors class="mb-4" />
-                        @if (session('status'))
-                            <div class="mb-4 font-medium text-sm text-green-600">
-                                {{ session('status') }}
+                        @if (session('error'))
+                            <div class="mb-4 font-medium text-sm text-red-600">
+                                {{ session('error') }}
                             </div>
                         @endif
                 
@@ -48,8 +48,10 @@
                                 <x-textarea id="information" class="block mt-1 w-full" name="information">{{ old('information') }}</x-textarea>
                             </div>
                             <div class="pb-4">
-                                <label class="mr-4"><input type="radio" class="mr-1" name="is_visible" value="1" checked>表示</label>
-                                <label><input type="radio" class="mr-1" name="is_visible" value="0">非表示</label>
+                                <label class="mr-4"><input type="radio" class="mr-1" name="is_visible" value="1"
+                                    {{ old('is_visible', 1) == 1 ? 'checked' : '' }}>表示</label>
+                                <label><input type="radio" class="mr-1" name="is_visible" value="0"
+                                    {{ old('is_visible', 1) == 0 ? 'checked' : '' }}>非表示</label>
                             </div>
                             <div class="flex pt-3 w-full mx-auto">
                                 <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">新規登録</button>

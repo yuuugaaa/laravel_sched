@@ -20,10 +20,19 @@ class Event extends Model
         'is_visible',
     ];
 
+    // イベント詳細用の日付フォーマット
     protected function eventDate(): Attribute
     {
         return new Attribute(
             get: fn() => Carbon::parse($this->start_date)->format('Y年m月d日')
+        );
+    }
+
+    // イベント編集 & 更新用の日付フォーマット
+    protected function editEventDate(): Attribute
+    {
+        return new Attribute(
+            get: fn() => Carbon::parse($this->start_date)->format('Y-m-d')
         );
     }
 

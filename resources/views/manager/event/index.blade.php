@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            イベント管理
+            イベント一覧
         </h2>
     </x-slot>
 
@@ -37,8 +37,8 @@
                                 <td class="px-4 py-3">{{ $event->start_date }}</td>
                                 <td class="px-4 py-3">{{ $event->end_date }}</td>
                                 <td class="px-4 py-3">30</td>
-                                <td class="px-4 py-3">{{ $event->max_people }}e</td>
-                                <td class="px-4 py-3">{{ $event->is_visible }}</td>
+                                <td class="px-4 py-3">{{ $event->max_people }}</td>
+                                <td class="px-4 py-3 {{ $event->is_visible == 1 ? 'text-green-600' : 'text-red-600' }}">{{ $event->is_visible == 1 ? 'ON' : 'OFF' }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
