@@ -30,6 +30,7 @@ Route::middleware([
 
 Route::prefix('manager')
     ->middleware('can:manager-higher')->group(function() {
+        Route::get('event/past', [EventController::class, 'past'])->name('event.past');
         Route::resource('event', EventController::class);
     });
 

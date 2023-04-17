@@ -53,9 +53,11 @@
                                 <label class="text-red-600">非表示中</label>
                                 @endif
                             </div>
+                            @if ($event->eventDate >= $today)
                             <div class="flex pt-3 w-full mx-auto">
                                 <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">編集</button>
                             </div>
+                            @endif
                         </form>
                     </div>
                     

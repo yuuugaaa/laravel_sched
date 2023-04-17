@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            イベント一覧
+            過去のイベント一覧
         </h2>
     </x-slot>
 
@@ -46,10 +46,9 @@
                             <div class="px-4 py-3">
                                 {{ $events->links() }}
                             </div>
-                        </div>
-                        <div class="flex px-4 py-3 w-full mx-auto flex-row-reverse">
-                            <button onclick="location.href='{{ route('event.create') }}'" class="flex ml-4 text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">新規登録</button>
-                            <button onclick="location.href='{{ route('event.past') }}'" class="flex text-white bg-gray-500 border-0 py-2 px-6 focus:outline-none hover:bg-gray-600 rounded">過去のイベント</button>
+                            <div class="flex px-4 py-3 w-full mx-auto flex-row-reverse">
+                                <button onclick="location.href='{{ route('event.index') }}'" class="flex text-white bg-gray-500 border-0 py-2 px-6 focus:outline-none hover:bg-gray-600 rounded">戻る</button>
+                            </div>
                         </div>
                     </div>
                 </section>

@@ -6,13 +6,16 @@ use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
 use App\Services\EventService;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
     public function index()
     {
+        $today = Carbon::today();
         $events = DB::table('events')
+            ->whereDate('start_date', '>=', $today)
             ->orderBy('start_date', 'asc')
             ->paginate(10);
 
@@ -59,11 +62,17 @@ class EventController extends Controller
 
     public function show(Event $event)
     {
-        return view('manager.event.show', compact('event'));
+        $today = Carbon::today()->format('Y年m月d日');
+        return view('manager.event.show', compact('event', 'today'));
     }
 
     public function edit(Event $event)
     {
+        $today = Carbon::today()->format('Y年m月d日');
+        if ($event->eventDate < $today) {
+            abort(404);
+        }
+
         return view('manager.event.edit', compact('event'));
     }
 
@@ -98,6 +107,18 @@ class EventController extends Controller
 
         session()->flash('status', 'イベントが更新されました。');
         return to_route('event.index');
+    }
+
+    public function past()
+    {
+        $today = Carbon::today();
+        $events = DB::table('events')
+            ->whereDate('start_date', '<', $today)
+            ->orderBy('start_date', 'desc')
+            ->paginate(10);
+
+        return view('manager.event.past', compact('events'));
+
     }
 
     public function destroy(Event $event)
