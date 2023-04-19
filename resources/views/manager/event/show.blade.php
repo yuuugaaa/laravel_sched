@@ -60,10 +60,42 @@
                             @endif
                         </form>
                     </div>
-                    
                 </div>
             </div>
         </div>
     </div>
+
+    @if (!$event->users->isEmpty())
+    <div class="pb-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
+                    <div class="max-w-2xl mx-auto">
+                        <div class="w-full mx-auto overflow-auto">
+                            <table class="table-auto w-full text-left whitespace-no-wrap">
+                            <thead>
+                                <tr>
+                                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">予約者名</th>
+                                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br">予約人数</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($event->users as $user)
+                                    @if (is_null($user->pivot->canceled_date))
+                                    <tr>
+                                    <td class="px-4 py-3">{{ $user->name }}</td>
+                                    <td class="px-4 py-3">{{ $user->pivot->number_of_people }}</td>
+                                    </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 </x-app-layout>
     

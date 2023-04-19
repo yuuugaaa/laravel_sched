@@ -36,7 +36,7 @@
                                 </td>
                                 <td class="px-4 py-3">{{ $event->start_date }}</td>
                                 <td class="px-4 py-3">{{ $event->end_date }}</td>
-                                <td class="px-4 py-3">30</td>
+                                <td class="px-4 py-3">{{ is_null($event->number_of_people) ? 0 : $event->number_of_people }}</td>
                                 <td class="px-4 py-3">{{ $event->max_people }}</td>
                                 <td class="px-4 py-3 {{ $event->is_visible == 1 ? 'text-green-600' : 'text-red-600' }}">{{ $event->is_visible == 1 ? 'ON' : 'OFF' }}</td>
                                 </tr>

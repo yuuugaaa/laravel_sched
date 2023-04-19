@@ -13,8 +13,20 @@ class EventController extends Controller
 {
     public function index()
     {
+        // イベントごとの予約人数の合計の取得
+        $reservedPeople = DB::table('reservations')
+            ->select('event_id', DB::raw('sum(number_of_people) as number_of_people'))
+            ->whereNull('canceled_date')
+            ->groupBy('event_id');
+
+        // 今日以降のイベントの取得
         $today = Carbon::today();
         $events = DB::table('events')
+            // 予約人数の結合
+            ->leftJoinSub($reservedPeople, 'reserved_people', function ($join) {
+                $join->on('events.id', '=', 'reserved_people.event_id');
+            })
+            // 今日以降
             ->whereDate('start_date', '>=', $today)
             ->orderBy('start_date', 'asc')
             ->paginate(10);
@@ -111,8 +123,20 @@ class EventController extends Controller
 
     public function past()
     {
+        // イベントごとの予約人数の合計の取得
+        $reservedPeople = DB::table('reservations')
+            ->select('event_id', DB::raw('sum(number_of_people) as number_of_people'))
+            ->whereNull('canceled_date')
+            ->groupBy('event_id');
+
+        // 今日以前のイベントの取得
         $today = Carbon::today();
         $events = DB::table('events')
+            // 予約人数の結合
+            ->leftJoinSub($reservedPeople, 'reserved_people', function ($join) {
+                $join->on('events.id', '=', 'reserved_people.event_id');
+            })
+            // 今日以前
             ->whereDate('start_date', '<', $today)
             ->orderBy('start_date', 'desc')
             ->paginate(10);
