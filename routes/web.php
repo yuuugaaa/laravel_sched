@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,4 +26,16 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+});
+
+Route::prefix('manager')
+    ->middleware(['can:manager-higher', 'auth'])->group(function() {
+        Route::get('event/past', [EventController::class, 'past'])->name('event.past');
+        Route::resource('event', EventController::class);
+    });
+
+Route::middleware(['can:user-higher', 'auth'])->group(function() {
+    Route::get('index', function() {
+        dd('user');
+    });
 });
