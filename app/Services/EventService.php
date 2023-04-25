@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class EventService
 {
+    // イベントの重複がないかどうかチェックする関数
     public static function checkEventDuplication($eventDate, $startTime, $endTime, $eventId=0)
     {
         /**
@@ -40,10 +41,31 @@ class EventService
         }
     }
 
+    // データベースに格納するため、日付と時間を結合する関数
     public static function joinDateAndTime($date, $time)
     {
         // 日付と時間を結合、フォーマット統一し、返す
         $join = $date. " ". $time;
         return Carbon::createFromFormat('Y-m-d H:i', $join);
+    }
+
+    // 選択した期間のイベントを取得する関数
+    public static function getWeekEvents($startDate, $endDate)
+    {
+        // 予約人数の取得
+        $reservedPeople = DB::table('reservations')
+            ->select('event_id', DB::raw('sum(number_of_people) as number_of_people'))
+            ->whereNull('canceled_date')
+            ->groupBy('event_id');
+
+        return DB::table('events')
+            // 予約人数の結合
+            ->leftJoinSub($reservedPeople, 'reserved_people', function ($join) {
+                $join->on('events.id', '=', 'reserved_people.event_id');
+            })
+            // 選択した期間に登録されているイベントを取得（1週間分）
+            ->whereBetween('start_date', [$startDate, $endDate])
+            ->orderBy('start_date', 'asc')
+            ->get();
     }
 }
