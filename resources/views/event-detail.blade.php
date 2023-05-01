@@ -62,6 +62,10 @@
                                 <div class="flex pt-3 w-full mx-auto">
                                     <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">予約</button>
                                 </div>
+                            @else
+                                <div class="flex pt-3 w-full mx-auto">
+                                    <div class="flex mx-auto text-white bg-gray-500 border-0 py-2 px-6 rounded">予約不可</div>
+                                </div>
                             @endif
                         </form>
                     </div>
