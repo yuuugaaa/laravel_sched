@@ -15,19 +15,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// ゲスト用
+// ゲスト権限
 Route::get('/', function () {
     return view('calender');
 });
 
-// 管理者用
+// マネージャー権限
 Route::prefix('manager')
     ->middleware(['can:manager-higher', 'auth'])->group(function() {
         Route::get('event/past', [EventController::class, 'past'])->name('event.past');
         Route::resource('event', EventController::class);
     });
 
-// 一般ユーザー用
+// ユーザー権限
 Route::middleware(['can:user-higher', 'auth'])->group(function() {
     Route::get('dashboard', [ReservationController::class, 'dashboard'])->name('dashboard');
+    Route::get('{id}', [ReservationController::class, 'detail'])->name('event.detail');
+    Route::post('{id}', [ReservationController::class, 'reserve'])->name('event.reserve');
 });
