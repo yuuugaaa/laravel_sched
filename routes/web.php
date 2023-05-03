@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\MyPageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,6 +31,8 @@ Route::prefix('manager')
 // ユーザー権限
 Route::middleware(['can:user-higher', 'auth'])->group(function() {
     Route::get('dashboard', [ReservationController::class, 'dashboard'])->name('dashboard');
+    Route::get('mypage', [MyPageController::class, 'index'])->name('mypage.index');
+    Route::get('mypage/{id}', [MyPageController::class, 'show'])->name('mypage.show');
     Route::get('{id}', [ReservationController::class, 'detail'])->name('event.detail');
     Route::post('{id}', [ReservationController::class, 'reserve'])->name('event.reserve');
 });
