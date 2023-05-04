@@ -47,7 +47,7 @@
                                   <div class="block mt-1 w-full">{{ $reservation->number_of_people }}</div>
                               </div>
                           </div>
-                          @if ($event->start_time > $now)
+                          @if ($event->start_date > $now)
                           <div class="flex pt-3 w-full mx-auto">
                               <a href="#" data-id="{{ $event->id }}" onclick="cancelPost(this)" class="flex mx-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">キャンセル</a>
                           </div>

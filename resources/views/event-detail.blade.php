@@ -47,6 +47,7 @@
                                 <x-label for="information" value="イベント詳細" />
                                 <div class="block mt-1 w-full">{!! nl2br(e($event->information)) !!}</div>
                             </div>
+                            @if ($event->start_date > $now)
                             @if (is_null($isReserved))
                                 @if ($canBeReservedPeople > 0)
                                     <div class="flex">
@@ -72,6 +73,7 @@
                                 <div class="flex pt-3 w-full mx-auto">
                                     <div class="flex mx-auto text-white bg-gray-500 border-0 py-2 px-6 rounded">予約済み</div>
                                 </div>
+                            @endif
                             @endif
                         </form>
                     </div>

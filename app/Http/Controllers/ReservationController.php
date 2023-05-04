@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use App\Models\Reservation;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -42,7 +43,10 @@ class ReservationController extends Controller
             ->latest()
             ->first();
 
-        return view('event-detail', compact('event', 'canBeReservedPeople', 'isReserved'));
+        // 過去未来の判定のため今の時刻を取得
+        $now = Carbon::now()->format('Y-m-d H:i:s');
+
+        return view('event-detail', compact('event', 'canBeReservedPeople', 'isReserved', 'now'));
     }
 
     public function reserve(Request $request)
@@ -66,7 +70,7 @@ class ReservationController extends Controller
                 'number_of_people' => $request->reserved_people,
             ]);
     
-            session()->flash('status', 'イベントが登録されました。');
+            session()->flash('status', 'イベントの予約が完了しました。');
             return to_route('dashboard');
         } else {
             session()->flash('error', '予約人数が定員を超過しており予約できませんでした。');
