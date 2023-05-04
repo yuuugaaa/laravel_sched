@@ -16,11 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// ゲスト権限
-Route::get('/', function () {
-    return view('calender');
-});
-
 // マネージャー権限
 Route::prefix('manager')
     ->middleware(['can:manager-higher', 'auth'])->group(function() {
@@ -34,6 +29,12 @@ Route::middleware(['can:user-higher', 'auth'])->group(function() {
     Route::get('mypage', [MyPageController::class, 'index'])->name('mypage.index');
     Route::get('mypage/{id}', [MyPageController::class, 'show'])->name('mypage.show');
     Route::post('mypage/{id}', [MyPageController::class, 'cancel'])->name('mypage.cancel');
-    Route::get('{id}', [ReservationController::class, 'detail'])->name('event.detail');
     Route::post('{id}', [ReservationController::class, 'reserve'])->name('event.reserve');
 });
+
+// ゲスト権限
+Route::get('/', function () {
+    return view('calender');
+})->name('/');
+
+Route::get('{id}', [ReservationController::class, 'detail'])->name('event.detail');
