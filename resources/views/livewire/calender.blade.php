@@ -14,9 +14,11 @@
                             $event = $events->firstWhere('start_date', $currentWeek[$i]['checkDay']. " ". \Constant::EVENT_TIME[$j]);
                         @endphp
                         @if (!is_null($event))
-                            <div class="py-1 h-8 border border-gray-100 text-center text-sm bg-indigo-50">
-                                {{ $event->name }}
-                            </div>
+                            <a href="{{ route('event.detail', [ 'id' => $event->id ]) }}">
+                                <div class="py-1 h-8 border border-gray-100 text-center text-sm bg-indigo-50">
+                                    {{ $event->name }}
+                                </div>
+                            </a>
                             @php
                                 // イベントの時間を取得し、30分で割って枠の個数を求め、イベント名が入るdivタグ分の1を引く
                                 $eventPeriod = \Carbon\Carbon::parse($event->start_date)->diffInMinutes($event->end_date) / 30 - 1;

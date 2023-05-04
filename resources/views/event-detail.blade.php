@@ -12,12 +12,13 @@
                     <div class="max-w-2xl mx-auto">
                         <x-validation-errors class="mb-4" />
                         @if (session('status'))
-                            <div class="mb-4 font-medium text-sm text-center text-green-600">
+                            <div class="mb-4 font-medium text-sm text-green-600">
                                 {{ session('status') }}
                             </div>
                         @endif
                 
-                        <form method="get" action="{{ route('event.edit', [ 'event' => $event->id ]) }}">
+                        <form method="post" action="{{ route('event.reserve', [ 'id' => $event->id ]) }}">
+                            @csrf
                             <div class="pb-4">
                                 <x-label for="event_name" value="イベント名" />
                                 <div class="block mt-1 w-full">{{ $event->name }}</div>
@@ -46,17 +47,31 @@
                                 <x-label for="information" value="イベント詳細" />
                                 <div class="block mt-1 w-full">{!! nl2br(e($event->information)) !!}</div>
                             </div>
-                            <div class="pb-4">
-                                @if ($event->is_visible)
-                                <label class="text-green-600">表示中</label>
+                            @if (is_null($isReserved))
+                                @if ($canBeReservedPeople > 0)
+                                    <div class="flex">
+                                        <div class="pb-4">
+                                            <x-label for="reserved_people" value="予約する" />
+                                            <select name="reserved_people" id="reserved_people" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                                                @for ($i = 1; $i <= $canBeReservedPeople; $i++)
+                                                    <option value="{{ $i }}">{{ $i }}人</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="id" id="id" value="{{ $event->id }}">
+                                    <div class="flex pt-3 w-full mx-auto">
+                                        <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">予約</button>
+                                    </div>
                                 @else
-                                <label class="text-red-600">非表示中</label>
+                                    <div class="flex pt-3 w-full mx-auto">
+                                        <div class="flex mx-auto text-white bg-gray-500 border-0 py-2 px-6 rounded">予約不可</div>
+                                    </div>
                                 @endif
-                            </div>
-                            @if ($event->eventDate >= $today)
-                            <div class="flex pt-3 w-full mx-auto">
-                                <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">編集</button>
-                            </div>
+                            @else
+                                <div class="flex pt-3 w-full mx-auto">
+                                    <div class="flex mx-auto text-white bg-gray-500 border-0 py-2 px-6 rounded">予約済み</div>
+                                </div>
                             @endif
                         </form>
                     </div>
@@ -64,38 +79,5 @@
             </div>
         </div>
     </div>
-
-    @if (!$event->users->isEmpty())
-    <div class="pb-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
-                    <div class="max-w-2xl mx-auto">
-                        <div class="w-full mx-auto overflow-auto">
-                            <table class="table-auto w-full text-left whitespace-no-wrap">
-                            <thead>
-                                <tr>
-                                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">予約者名</th>
-                                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br">予約人数</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($event->users as $user)
-                                    @if (is_null($user->pivot->canceled_date))
-                                    <tr>
-                                    <td class="px-4 py-3">{{ $user->name }}</td>
-                                    <td class="px-4 py-3">{{ $user->pivot->number_of_people }}</td>
-                                    </tr>
-                                    @endif
-                                @endforeach
-                            </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endif
 </x-app-layout>
     

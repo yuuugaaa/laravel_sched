@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\MyPageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,28 +16,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// ゲスト権限
 Route::get('/', function () {
     return view('calender');
 });
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-});
-
+// マネージャー権限
 Route::prefix('manager')
     ->middleware(['can:manager-higher', 'auth'])->group(function() {
         Route::get('event/past', [EventController::class, 'past'])->name('event.past');
         Route::resource('event', EventController::class);
     });
 
+// ユーザー権限
 Route::middleware(['can:user-higher', 'auth'])->group(function() {
-    Route::get('index', function() {
-        dd('user');
-    });
+    Route::get('dashboard', [ReservationController::class, 'dashboard'])->name('dashboard');
+    Route::get('mypage', [MyPageController::class, 'index'])->name('mypage.index');
+    Route::get('mypage/{id}', [MyPageController::class, 'show'])->name('mypage.show');
+    Route::post('mypage/{id}', [MyPageController::class, 'cancel'])->name('mypage.cancel');
+    Route::get('{id}', [ReservationController::class, 'detail'])->name('event.detail');
+    Route::post('{id}', [ReservationController::class, 'reserve'])->name('event.reserve');
 });
