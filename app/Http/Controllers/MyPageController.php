@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
+use App\Models\Reservation;
 use App\Models\User;
 use App\Services\MyPageService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,5 +22,17 @@ class MyPageController extends Controller
         $pastEvents = MyPageService::reservedEvents($events, 'past');
 
         return view('mypage.index', compact('futureEvents', 'pastEvents'));
+    }
+
+    public function show($id)
+    {
+        $event = Event::findOrFail($id);
+        $reservation = Reservation::where('user_id', '=', Auth::id())
+            ->where('event_id', '=', $id)
+            ->first();
+
+        $now = Carbon::now()->format('Y-m-d H:i:s');
+
+        return view('mypage.show', compact('event', 'reservation', 'now'));
     }
 }
