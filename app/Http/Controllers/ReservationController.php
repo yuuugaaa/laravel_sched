@@ -35,7 +35,14 @@ class ReservationController extends Controller
             $canBeReservedPeople = $event->max_people;
         }
 
-        return view('event-detail', compact('event', 'canBeReservedPeople'));
+        // ログインユーザーのこのイベントに関する予約情報(キャンセルされていない)の取得
+        $isReserved = Reservation::where('user_id', '=', Auth::id())
+            ->where('event_id', '=', $id)
+            ->where('canceled_date', '=', null)
+            ->latest()
+            ->first();
+
+        return view('event-detail', compact('event', 'canBeReservedPeople', 'isReserved'));
     }
 
     public function reserve(Request $request)

@@ -19,13 +19,13 @@ class ReservationSeeder extends Seeder
             [
                 'user_id' => 1,
                 'event_id' => 1,
-                'number_of_people' => 5,
+                'number_of_people' => 2,
                 'canceled_date' => null,
             ],
             [
                 'user_id' => 3,
                 'event_id' => 1,
-                'number_of_people' => 3,
+                'number_of_people' => 1,
                 'canceled_date' => null,
             ],
             [

@@ -15,6 +15,9 @@
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         カレンダー
                     </x-nav-link>
+                    <x-nav-link href="{{ route('mypage.index') }}" :active="request()->routeIs('mypage.*')">
+                        マイページ
+                    </x-nav-link>
                     @can('manager-higher')
                     <x-nav-link href="{{ route('event.index') }}" :active="request()->routeIs('event.*')">
                         イベント管理

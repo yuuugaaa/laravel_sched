@@ -30,6 +30,7 @@ class MyPageController extends Controller
         $event = Event::findOrFail($id);
         $reservation = Reservation::where('user_id', '=', Auth::id())
             ->where('event_id', '=', $id)
+            ->latest()
             ->first();
         // 過去未来の判定のため今の時刻を取得
         $now = Carbon::now()->format('Y-m-d H:i:s');
@@ -42,6 +43,7 @@ class MyPageController extends Controller
         // 予約情報を取得
         $reservation = Reservation::where('user_id', '=', Auth::id())
             ->where('event_id', '=', $id)
+            ->latest()
             ->first();
         // DBにキャンセル日時を追加
         $reservation->canceled_date = Carbon::now()->format('Y-m-d H:i:s');

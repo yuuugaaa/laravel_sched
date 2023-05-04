@@ -47,24 +47,30 @@
                                 <x-label for="information" value="イベント詳細" />
                                 <div class="block mt-1 w-full">{!! nl2br(e($event->information)) !!}</div>
                             </div>
-                            @if ($canBeReservedPeople)
-                                <div class="flex">
-                                    <div class="pb-4">
-                                        <x-label for="reserved_people" value="予約する" />
-                                        <select name="reserved_people" id="reserved_people" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                                            @for ($i = 1; $i <= $canBeReservedPeople; $i++)
-                                                <option value="{{ $i }}">{{ $i }}人</option>
-                                            @endfor
-                                        </select>
+                            @if (is_null($isReserved))
+                                @if ($canBeReservedPeople > 0)
+                                    <div class="flex">
+                                        <div class="pb-4">
+                                            <x-label for="reserved_people" value="予約する" />
+                                            <select name="reserved_people" id="reserved_people" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                                                @for ($i = 1; $i <= $canBeReservedPeople; $i++)
+                                                    <option value="{{ $i }}">{{ $i }}人</option>
+                                                @endfor
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <input type="hidden" name="id" id="id" value="{{ $event->id }}">
-                                <div class="flex pt-3 w-full mx-auto">
-                                    <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">予約</button>
-                                </div>
+                                    <input type="hidden" name="id" id="id" value="{{ $event->id }}">
+                                    <div class="flex pt-3 w-full mx-auto">
+                                        <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">予約</button>
+                                    </div>
+                                @else
+                                    <div class="flex pt-3 w-full mx-auto">
+                                        <div class="flex mx-auto text-white bg-gray-500 border-0 py-2 px-6 rounded">予約不可</div>
+                                    </div>
+                                @endif
                             @else
                                 <div class="flex pt-3 w-full mx-auto">
-                                    <div class="flex mx-auto text-white bg-gray-500 border-0 py-2 px-6 rounded">予約不可</div>
+                                    <div class="flex mx-auto text-white bg-gray-500 border-0 py-2 px-6 rounded">予約済み</div>
                                 </div>
                             @endif
                         </form>
