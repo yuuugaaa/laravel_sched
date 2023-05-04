@@ -26,13 +26,28 @@ class MyPageController extends Controller
 
     public function show($id)
     {
+        // イベント情報と予約情報を取得
         $event = Event::findOrFail($id);
         $reservation = Reservation::where('user_id', '=', Auth::id())
             ->where('event_id', '=', $id)
             ->first();
-
+        // 過去未来の判定のため今の時刻を取得
         $now = Carbon::now()->format('Y-m-d H:i:s');
 
         return view('mypage.show', compact('event', 'reservation', 'now'));
+    }
+
+    public function cancel($id)
+    {
+        // 予約情報を取得
+        $reservation = Reservation::where('user_id', '=', Auth::id())
+            ->where('event_id', '=', $id)
+            ->first();
+        // DBにキャンセル日時を追加
+        $reservation->canceled_date = Carbon::now()->format('Y-m-d H:i:s');
+        $reservation->save();
+
+        session()->flash('status', 'キャンセルが完了しました。');
+        return to_route('mypage.index');
     }
 }

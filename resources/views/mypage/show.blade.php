@@ -17,7 +17,8 @@
                           </div>
                       @endif
               
-                      {{--<form method="get" action="{{ route('event.edit', [ 'event' => $event->id ]) }}">--}}
+                      <form id="cancel_{{ $event->id }}" method="post" action="{{ route('mypage.cancel', [ 'id' => $event->id ]) }}">
+                          @csrf
                           <div class="pb-4">
                               <x-label for="event_name" value="イベント名" />
                               <div class="block mt-1 w-full">{{ $event->name }}</div>
@@ -46,17 +47,25 @@
                                   <div class="block mt-1 w-full">{{ $reservation->number_of_people }}</div>
                               </div>
                           </div>
-                          {{--あとで変える--}}
-                          @if ($event->start_time < $now)
+                          @if ($event->start_time > $now)
                           <div class="flex pt-3 w-full mx-auto">
-                              <button class="flex mx-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">キャンセル</button>
+                              <a href="#" data-id="{{ $event->id }}" onclick="cancelPost(this)" class="flex mx-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">キャンセル</a>
                           </div>
                           @endif
-                      {{--</form>--}}
+                      </form>
                   </div>
               </div>
           </div>
       </div>
   </div>
+
+  <script>
+    function cancelPost(e) {
+      'use strict';
+      if (confirm('本当にキャンセルしてもよろしいですか？')) {
+        document.getElementById('cancel_' + e.dataset.id).submit();
+      }
+    }
+  </script>
 </x-app-layout>
   
